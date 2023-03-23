@@ -48,9 +48,9 @@ create table Customer (
 	customer_name VARCHAR(50) NOT NULL,
 	DOB DATE NOT NULL,
 	Gender VARCHAR(50) NOT NULL,
-	customer_address VARCHAR(50) NOT NULL,
+	customer_address VARCHAR(100) NOT NULL,
 	phone_no VARCHAR(50) NOT NULL,
-	customer_email VARCHAR(50) NOT NULL,
+	customer_email VARCHAR(100) NOT NULL,
     PRIMARY KEY (Customer_ID)
 );
 
@@ -62,8 +62,8 @@ create table Orders (
 	O_id INT NOT NULL AUTO_INCREMENT,
 	Order_Total FLOAT NOT NULL,
 	Payment_Mode VARCHAR(50) NOT NULL,
-	Shipping_Address VARCHAR(50) NOT NULL,
-	Expected_Delivry VARCHAR(50) NOT NULL,
+	Shipping_Address VARCHAR(100) NOT NULL,
+	Expected_Delivry VARCHAR(100) NOT NULL,
     PRIMARY KEY (O_id) 
 );
 
@@ -86,9 +86,9 @@ create table Supplier (
 CREATE TABLE product (
     P_id INT NOT NULL AUTO_INCREMENT,
     Pname VARCHAR(50) NOT NULL,
-    Brand VARCHAR(50) NOT NULL,
+    Brand VARCHAR(100) NOT NULL,
     Price DECIMAL(10,2) NOT NULL,
-    Stock VARCHAR(13) NOT NULL,
+    Stock VARCHAR(100) NOT NULL,
     Offer INT NOT NULL,
     PRIMARY KEY (P_id),
     CHECK (Price >= 0)
@@ -100,7 +100,7 @@ CREATE TABLE product (
 create table Category (
 	Cid INT NOT NULL AUTO_INCREMENT,
 	Category_Name VARCHAR(11) NOT NULL,
-	Category_info VARCHAR(50) NOT NULL,
+	Category_info VARCHAR(100) NOT NULL,
 	PRIMARY KEY (Cid)
 );
 
@@ -122,7 +122,7 @@ create table Employee (
 create table resolve (
     Employee_ID INT NOT NULL,
     Customer_ID INT NOT NULL,
-    forum VARCHAR(50) NOT NULL,
+    forum VARCHAR(100) NOT NULL,
     f_status VARCHAR(50) NOT NULL,
     Foreign key(Employee_ID) references Employee(Employee_ID) on delete cascade,
     Foreign key(Customer_ID) references Customer(Customer_ID) on delete cascade,
@@ -131,7 +131,7 @@ create table resolve (
 
 create table has_rating (
     Customer_ID INT NOT NULL,
-    forum VARCHAR(50) NOT NULL,
+    forum VARCHAR(100) NOT NULL,
     rating INT NOT NULL,
     Foreign key(Customer_ID) references Customer(Customer_ID) on delete cascade,
     PRIMARY KEY (Customer_ID)
@@ -189,7 +189,6 @@ create table has_account (
     Foreign key(account_ID) references Account(account_ID) on delete cascade,
     PRIMARY KEY (Customer_ID, account_ID)
 );
-
 
 --
 --  Below Code to be Check
