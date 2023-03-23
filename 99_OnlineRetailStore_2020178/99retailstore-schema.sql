@@ -43,11 +43,10 @@ create table Account (
 --
 -- Table structure for table `Customer`
 --
-
 create table Customer (
 	Customer_ID INT NOT NULL AUTO_INCREMENT,
 	customer_name VARCHAR(50) NOT NULL,
-	DOB VARCHAR(15) NOT NULL,
+	DOB DATE NOT NULL,
 	Gender VARCHAR(50) NOT NULL,
 	customer_address VARCHAR(50) NOT NULL,
 	phone_no VARCHAR(50) NOT NULL,
@@ -61,7 +60,7 @@ create table Customer (
 --
 create table Orders (
 	O_id INT NOT NULL AUTO_INCREMENT,
-	Order_Total VARCHAR(50) NOT NULL,
+	Order_Total FLOAT NOT NULL,
 	Payment_Mode VARCHAR(50) NOT NULL,
 	Shipping_Address VARCHAR(50) NOT NULL,
 	Expected_Delivry VARCHAR(50) NOT NULL,
@@ -75,7 +74,7 @@ create table Supplier (
 	S_id INT NOT NULL AUTO_INCREMENT,
 	Sname VARCHAR(50) NOT NULL,
 	Contact VARCHAR(50) NOT NULL,
-	Address VARCHAR(50) NOT NULL,
+	Address VARCHAR(100) NOT NULL,
 	PRIMARY KEY (S_id)
 );
 
@@ -84,15 +83,15 @@ create table Supplier (
 --
 
 
-create table product (
-	P_id INT NOT NULL AUTO_INCREMENT,
-	Pname VARCHAR(50) NOT NULL,
-	Brand VARCHAR(50)  NOT NULL,
-	Price VARCHAR(50) NOT NULL,
-	Stock VARCHAR(13) NOT NULL,
-	Offer INT NOT NULL,
-    PRIMARY KEY (P_id)
-    -- CONSTRAINT cost_pos CHECK ( Price>= 0)
+CREATE TABLE product (
+    P_id INT NOT NULL AUTO_INCREMENT,
+    Pname VARCHAR(50) NOT NULL,
+    Brand VARCHAR(50) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    Stock VARCHAR(13) NOT NULL,
+    Offer INT NOT NULL,
+    PRIMARY KEY (P_id),
+    CHECK (Price >= 0)
 );
 
 --
@@ -139,13 +138,15 @@ create table has_rating (
 );
 
 create table chooses(
+    customer_id INT NOT NULL,
 	product_id INT NOT NULL,
-	category_id INT NOT NULL,
+	category_id INT,
     quantity INT NOT NULL,
 	Foreign key(product_id) references product(P_id) on delete cascade,
 	Foreign key(category_id) references Category(Cid) on delete cascade,
-	Primary key(product_id,category_id),
-    CONSTRAINT cost_pos CHECK ( quantity> 0),
+    Foreign key(customer_id) references Customer(Customer_ID) on delete cascade,
+	Primary key(product_id, customer_id),
+    CHECK ( quantity> 0)
 );
 
 create table has (
