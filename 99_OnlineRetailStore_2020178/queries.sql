@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- show table 
 -- add entries in table 
 -- delete entries in table
@@ -18,53 +19,65 @@
 -- create view
 
 
--- 1. show table
-SELECT * FROM Customer;
-SELECT * FROM product;
-SELECT * FROM Supplier;
-SELECT product_id FROM chooses WHERE customer_id = 1;
+-- -- 1. show table
+-- SELECT * FROM Customer;
+-- SELECT * FROM product;
+-- SELECT * FROM Supplier;
+-- SELECT * FROM Category;
+-- SELECT * FROM Account;
+-- SELECT * FROM Employee;
+-- SELECT * FROM Orders;
+
+-- SELECT product_id FROM chooses WHERE customer_id = 1;
 
 
--- 2. add entries in table
-INSERT INTO Customer (Customer_ID, Customer_Name, Customer_Address, Customer_Phone, Customer_Email) VALUES (1, 'John', '123 Main St', '123-456-7890')
+-- -- 2. add entries in table
+-- insert into Customer (Customer_ID, customer_name, DOB, Gender, customer_address, phone_no, customer_email) values (101, 'Sarthak Kumar', '2002-04-09', 'Male', 'IIITD', '101-387-5766', 'sarthak20241@iiitd.ac.in');
+
 
 -- 3. delete entries in table
 DELETE FROM customer WHERE Customer_ID = 15;
-DELETE FROM product WHERE product_id = 10;
+DELETE FROM product WHERE P_id = 10;
 
 
 -- 4. update entries in table
 
 -- Update the email address of a customer and name of a customer whose customer_id is 1:
 UPDATE customer SET customer_email = 'sarthak20241@iiitd.ac.in' WHERE customer_id = 1;
-UPDATE cutomer SET customer_name = 'Sarthak' WHERE customer_id = 1;
+UPDATE customer SET customer_name = 'Sarthak' WHERE customer_id = 1;
 
 -- Update the price of all products in the "Toys" category to be 10% higher:
-UPDATE Products
-SET Price = Price * 1.1
-WHERE Category = 'Toys'
+UPDATE Products SET Price = Price * 1.1 WHERE Category = 'Toys';
 
 
 -- 5. select entries in table
 -- Find the product name and price of the most expensive product.
-SELECT product_name, price
+SELECT Pname, Price
 FROM product
-WHERE price = (
-    SELECT MAX(price)
-    FROM product
-)
+WHERE Price = (
+    SELECT MAX(p.Price)
+    FROM product p
+);
+
 
 -- Find the product name and price of the cheapest product.
-SELECT product_name, price
+SELECT Pname, Price
 FROM product
-WHERE price = (
-    SELECT MIN(price)
-    FROM product
-)
+WHERE Price = (
+    SELECT MIN(p.Price)
+    FROM product p
+);
+
 
 -- Show the total price of an order by a specific customer:
 SELECT SUM(Price) FROM product 
 WHERE P_id IN (SELECT product_id FROM has WHERE Customer_ID = 1);
+
+-- Retrieve the names and email addresses of all customers who have a rating of 5 in the "Feedback" forum:
+SELECT customer_name, customer_email
+FROM Customer
+JOIN has_rating ON Customer.Customer_ID = has_rating.Customer_ID
+WHERE has_rating.forum = 'Feedback' AND has_rating.rating = 5;
 
 
 -- Show all the products and their corresponding categories
@@ -82,44 +95,40 @@ INNER JOIN resolve ON Employee.Employee_ID = resolve.Employee_ID;
 -- Find the names of all customers who have placed an order for a product with a price greater than Rs 100 and a quantity greater than 5.
 SELECT DISTINCT c.name
 FROM customer c
-JOIN orders o ON c.customer_id = o.customer_id
+JOIN orders o ON c.Cid = o.customer_id
 JOIN product p ON o.product_id = p.product_id
 WHERE p.price > 100 AND o.quantity > 5
 
 
 -- This query retrieves all customer names such that for every product, the customer has ordered that product at least once. We achieve this by using the division operator, which finds all customers who have ordered every product in the database.
 SELECT DISTINCT c.customer_name
-FROM customers c
+FROM Customer c
 WHERE NOT EXISTS (
-    SELECT p.product_name
-    FROM products p
+    SELECT p.Pname
+    FROM product p
     WHERE NOT EXISTS (
-        SELECT o.order_id
-        FROM orders o
+        SELECT o.O_id
+        FROM Orders o
         WHERE o.product_id = p.product_id
-        AND o.customer_id = c.customer_id
+        AND o.Customer_ID = c.Customer_ID
     )
 );
 
+-- Retrieve the names of all products and their prices, sorted by price in descending order:/
+SELECT Pname, Price
+FROM product
+ORDER BY Price DESC;
 
+-- Retrieve the names of all customers who have made an order:
+SELECT DISTINCT customer_name
+FROM Customer
+JOIN has_order ON Customer.Customer_ID = has_order.Customer_ID;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- Retrieve the names of all products in a specific category:
+SELECT Pname
+FROM product
+JOIN chooses ON product.P_id = chooses.product_id
+WHERE chooses.category_id = 2;
 
 
 
